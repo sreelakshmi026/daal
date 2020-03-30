@@ -1,0 +1,81 @@
+ /** Program to display the median of the given  array of unsorted 
+ *positive integers using divide and conquer method
+ */ 
+#include <iostream>
+
+using namespace std;
+ int n;
+void median(int[],int,int);//function for finding median
+int dac(int[],int,int);//function for applying divide and conquer
+ 
+int main()
+{
+    int a[50],i;
+    cout<<"How many elements?";
+    cin>>n;
+    if(n%2!=0) //The program continues only if we enter odd number off elements
+    {
+    cout<<"\nEnter array elements:\n";
+    for(i=0;i<n;i++)
+        cin>>a[i];
+    median(a,0,n-1);
+        }
+      else
+      cout<<"you have entered even number of elements\n";
+    /**if the number of elements entered are even it displays 
+     * above message and exits from the program
+     */ 
+    return 0;        
+}
+ int dac(int a[],int l,int u)
+{
+    int pivot,lb,ub,temp;
+    pivot=a[l];
+    lb=l;
+    ub=u+1;
+    
+    do
+    {
+        do
+            lb++;//lower bound is increemented if the below condition is satisified
+            
+        while(a[lb]<pivot&&lb<=u);
+        
+        do
+            ub--;//upper bound is decreemented if the below condition is satisified
+        while(pivot<a[ub]);
+        
+        if(lb<ub)//swap of lower bound and upper bound is carried out
+        {
+            temp=a[lb];
+            a[lb]=a[ub];
+            a[ub]=temp;
+        }
+    }while(lb<ub);
+    //swap of lower bound and pivot is carried out
+    a[l]=a[ub];
+    a[ub]=pivot;
+    
+    return(ub);//returns place of pivot
+}
+void median(int a[],int l,int u)
+{
+    //finds the median using divide and conquer method
+    int loc;
+    if(l<u)
+    {
+        
+        loc=dac(a,l,u);//it returns the pivot place in the array
+        if(loc==n/2)
+        {
+            cout<<"Median of the given elements is : "<<a[loc];
+            exit; //ends the program as soon as we get median
+        }
+        else if(loc>n/2){
+        median(a,l,loc-1);//if pivot position is greater than n/2 it moves to left half
+        }
+        else{
+        median(a,loc+1,u);//if pivot position is lesser than n/2 it moves to left half
+        }
+    }
+}
